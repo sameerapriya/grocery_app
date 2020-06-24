@@ -1,6 +1,7 @@
 from django.db import models
 from mptt.models import MPTTModel
 from mptt.managers import TreeManager
+from django.urls import reverse_lazy
 
 
 class Category(MPTTModel):
@@ -14,11 +15,20 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse_lazy('dashboard:category_dashboard:category_list')
+
 
 class Brand(models.Model):
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
     image = models.ImageField()
+
+    def get_absolute_url(self):
+        return reverse_lazy('dashboard:brand_dashboard:brand_list')
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -30,9 +40,13 @@ class Product(models.Model):
     sku = models.CharField(max_length=30, unique=True)
     stock = models.PositiveIntegerField()
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy('dashboard:product_dashboard:product_list')
 
 
 class ProductImage(models.Model):

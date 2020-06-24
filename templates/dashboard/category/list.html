@@ -1,0 +1,11 @@
+{% extends 'dashboard/base.html' %}
+{% block dashcontent %}
+    <a href="{% url 'dashboard:category_dashboard:category_create' %}">Create Category</a>
+    <br>
+    {% for object in object_list %}
+        <div>
+        <a href="{% url 'dashboard:category_dashboard:category_update' pk=object.pk %}">{{ object.name }}</a>
+        <p>slug:{{object.slug}}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
